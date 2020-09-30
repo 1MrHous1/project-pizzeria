@@ -49,7 +49,7 @@
   };
 
   const templates = {
-    menuProduct: Handlebars.compile(document.querySelector(select.templateOf.menuProduct).innerHTML),
+    menuProduct: Handlebars.compile(document.querySelector(select.templateOf.menpmnuProduct).innerHTML),
   };
 
   class Product {
