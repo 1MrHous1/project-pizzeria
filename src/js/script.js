@@ -49,7 +49,7 @@
   };
 
   const templates = {
-    menuProduct: Handlebars.compile(document.querySelector(select.templateOf.menpmnuProduct).innerHTML),
+    menuProduct: Handlebars.compile(document.querySelector(select.templateOf.menuProduct).innerHTML),
   };
 
   class Product {
@@ -65,7 +65,7 @@
 
       /* generate HTML based on template */
       const generateHTML = templates.menuProduct(thisProduct.data);
-      console.log(generateHTML);
+
       /* create element using utils.createEle..*/
       thisProduct.element = utils.createDOMFromHTML(generateHTML);
       /* find menu container */
@@ -73,39 +73,66 @@
       /* add element to menu */
       menuContainer.appendChild(thisProduct.element);
     }
-  }
+    initAccordion() {
+      const thisProduct = this;
 
-  const app = {
+      /* find the clickable trigger (the element that should react to clicking) */
+      thisProduct.accordionTrigger.addEventListener('click', function (event) {
+        /* START: click event listener to trigger */
 
-    initMenu: function () {
-      const thisApp = this;
+        /* prevent default action for event */
+        event.preventDefault();
+        /* toggle active class on element of thisProduct */
+        thisProduct.element.classList.toggle(classNames.menuProduct.wrapperActive);
+        /* find all active products */
+        const activeProduct = document.querySelectorAll(select.all.menuProducts);
+        /* START LOOP: for each active product */
+        for (let activeProduct of activeProducts) {
+          /* START: if the active product isn't the element of thisProduct */
+          if (activeProduct != thisProduct.element) {
+            /* remove class active for the active product */
+            activeProduct.classList.remove(classNames.menuProduct.wrapperActive);
+            /* END: if the active product isn't the element of thisProduct */
+          }
+          /* END LOOP: for each active product */
+        }
+        /* END: click event listener to trigger */
+      });
 
-      console.log('thisApp.data:', thisApp.data);
-      for (let productData in thisApp.data.products) {
-        new Product(productData, thisApp.data.products[productData]);
-      }
-    },
 
-    init: function () {
-      const thisApp = this;
-      console.log('*** App starting ***');
-      console.log('thisApp:', thisApp);
-      console.log('classNames:', classNames);
-      console.log('settings:', settings);
-      console.log('templates:', templates);
 
-      thisApp.initData();
-      thisApp.initMenu();
-    },
+      const app = {
 
-    initData: function () {
-      const thisApp = this;
+        initMenu: function () {
+          const thisApp = this;
 
-      thisApp.data = dataSource;
+          console.log('thisApp.data:', thisApp.data);
+          for (let productData in thisApp.data.products) {
+            new Product(productData, thisApp.data.products[productData]);
+          }
+        },
+
+        init: function () {
+          const thisApp = this;
+          console.log('*** App starting ***');
+          console.log('thisApp:', thisApp);
+          console.log('classNames:', classNames);
+          console.log('settings:', settings);
+          console.log('templates:', templates);
+
+          thisApp.initData();
+          thisApp.initMenu();
+        },
+
+        initData: function () {
+          const thisApp = this;
+
+          thisApp.data = dataSource;
+        }
+      };
+
+
+
+      app.init();
     }
-  };
-
-
-
-  app.init();
-}
+  }
