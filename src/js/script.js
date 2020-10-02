@@ -107,6 +107,10 @@ class Cart {
   const cartElem = document.querySelector(select.containerOf.cart);
   thisApp.cart = new Cart(cartElem);
 }
+add(menuProduct){
+  console.log('adding product', menuProduct);
+}
+}
 
 
 
@@ -122,6 +126,7 @@ class Product {
     thisProduct.processOrder();
     thisProduct.initAccordion();
     thisProduct.initActions();
+    app.cart.add(thisProduct);
     //console.log('new Product:', thisProduct);
   }
   renderInMenu() {
@@ -217,6 +222,13 @@ class Product {
         const activeImages = thisProduct.imageWrapper.querySelectorAll('.' + paramId + '-' + optionId);
         // console.log('activeImages', activeImages);
         if (optionSelected) {
+          if (!thisProduct.param[paramId]) {
+            thisProduct.params[paramId] = {
+              label: param.label,
+              options: {},
+            };
+          }
+          thisProduct.params[paramId].option[optionId] = option.label;
           if (!thisProduct.params[paramId]) {
             thisProduct.params[paramId] = {
               label: param.label,
