@@ -123,6 +123,53 @@
       // console.log('initOrderForm - thisProduct', thisProduct);
     }
 
+    processOrder() {
+      const thisProduct = this;
+      thisProduct.params = {};
+      const formData = utils.serializeFormToObject(thisProduct.form);
+      let price = thisProduct.data.price;
+      for (let paramId in thisProduct.data.params) {
+        // console.log(thisProduct.data.params[paramId]);
+        const param = thisProduct.data.params[paramId];
+        // console.log('param', param);
+        for (let optionId in param.options) {
+          const option = param.options[optionId];
+          const optionSelected = formData.hasOwnProperty(paramId) && formData[paramId].indexOf(optionId) > -1;
+          // console.log(optionSelected);
+          if (optionSelected && !option.default) {
+            price += option.price;
+            // console.log('price', price);
+          } else if (!optionSelected && option.default) {
+            price -= option.price;
+            // console.log('price', price);
+          }
+          const activeImages = thisProduct.imageWrapper.querySelectorAll('.' + paramId + '-' + optionId);
+          // console.log('activeImages', activeImages);
+          if (optionSelected) {
+            if (!thisProduct.params[paramId]) {
+              thisProduct.params[paramId] = {
+                label: param.label,
+                options: {},
+              };
+            }
+            thisProduct.params[paramId].options[optionId] = option.label;
+            for (let activeImage of activeImages) {
+              activeImage.classList.add(classNames.menuProduct.imageVisible);
+            }
+          } else {
+            for (let activeImage of activeImages) {
+              activeImage.classList.remove(classNames.menuProduct.imageVisible);
+            }
+          }
+        }
+      }
+      /* multiply price by amount */
+      thisProduct.priceSingle = price;
+      thisProduct.price = thisProduct.priceSingle * thisProduct.amountWidget.value;
+
+      /* set the contents of thisProduct.priceElem to be the value of variable price */
+      thisProduct.priceElem.innerHTML = thisProduct.price;
+    }
 
     //   const app = {
 
