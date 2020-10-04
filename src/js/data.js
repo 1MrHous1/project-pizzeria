@@ -117,4 +117,3 @@ dataSource.products = {
 };
 
 
-export default data;
