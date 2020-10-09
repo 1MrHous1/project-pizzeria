@@ -10,12 +10,8 @@ import {
 import {
   AmountWidget
 } from './AmountWidget.js';
-import {
-  DatePicker
-} from './DatePicker.js';
-import {
-  HourPicker
-} from './HourPicker.js';
+import { DatePicker } from './DatePicker.js';
+import { HourPicker } from './HourPicker.js';
 
 export class Booking {
   constructor(element) {
@@ -137,9 +133,7 @@ export class Booking {
     const lastBookedHour = bookingHour + duration;
 
     for (
-      let tableBlockedHour = bookingHour;
-      tableBlockedHour < lastBookedHour;
-      tableBlockedHour += 0.5
+      let tableBlockedHour = bookingHour; tableBlockedHour < lastBookedHour; tableBlockedHour += 0.5
     ) {
       if (!thisBooking.booked[date][tableBlockedHour]) {
         thisBooking.booked[date][tableBlockedHour] = [];
